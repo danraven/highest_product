@@ -2,37 +2,32 @@ import math
 import argparse
 from typing import List
 
-def smallest_index(l: List[int]) -> int:
-    i_min = 0
-    for i, val in enumerate(l[1:]):
-        if (val < l[i_min]):
-            i_min = i + 1
-    return i_min
-
-def highest_product(nums: List[int], size: int=3) -> int:
-    # Sanity checks: numbers to check cannot be lower than 2, and the list cannot be smaller than the numbers required
-    if size < 2:
-        raise ValueError("Size must be at least 2")
+def highest_product(nums: List[int]) -> int:
+    size = 3
+    # Sanity check, can't have a list smaller than the desired size
     if len(nums) < size:
         raise ValueError("List of numbers must be at least the given size (%d)" % size)
     # If the list is exactly the size, its elements yield the highest product by default
     if len(nums) == size:
         return math.prod(nums)
     largest = nums[:size]
-    min_index = smallest_index(largest)
+    smallest = nums[:size - 1]
+    min_index = largest.index(min(largest))
+    max_index = smallest.index(max(smallest))
     for n in nums[size:]:
-        if n <= largest[min_index]:
-            continue
-        largest[min_index] = n
-        min_index = smallest_index(largest)
-    return math.prod(largest)
+        if n > largest[min_index]:
+            largest[min_index] = n
+            min_index = largest.index(min(largest))
+        if n < smallest[max_index]:
+            smallest[max_index] = n
+            max_index = smallest.index(max(smallest))
+    return max(math.prod(largest), math.prod(smallest + [max(largest)]))
 
 def run():
     parser = argparse.ArgumentParser()
     parser.add_argument("numbers", nargs="+", help="List of numbers", type=int)
-    parser.add_argument("-s", "--size", help="Number of highest numbers to multiply", type=int, default=3)
     args = parser.parse_args()
-    print(highest_product(args.numbers, args.size))
+    print(highest_product(args.numbers))
 
 if __name__ == "__main__":
     run()

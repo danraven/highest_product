@@ -1,10 +1,10 @@
 # Highest product
 
 ## Description
-A simple algorithm to fetch and multiply a defined number of largest numbers in a given list. Complexity should be `O((n-k)*k)` where `n` equals the size of the list and `k` equals the number of largest numbers.
+A simple algorithm to fetch the three numbers of a list that would make the highest product.
 
 ## Requirements
 * Python 3.8
 
 ## Usage
-`python highest_product.py [-s SIZE] ...numbers`
+`python highest_product.py ...numbers`
